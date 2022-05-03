@@ -208,7 +208,6 @@ def run(weights='yolov5s.pt',  # model.pt path(s)
 
                         annotator.box_label(xyxy, label, color=colors(c, True))
                         c1, c2 = (int(xyxy[0]), int(xyxy[1])), (int(xyxy[2]), int(xyxy[3]))
-                        bbox_1.append({"name": class_label, "position": {"x1": c1[0], "y1": c1[1], "x2": c2[0], "y2": c2[1]}})
                         x_min = min(c1[0], c2[0])
                         x_max = max(c1[0], c2[0])
                         y_min = min(c1[1], c2[1])
@@ -217,7 +216,9 @@ def run(weights='yolov5s.pt',  # model.pt path(s)
                         b_center_y = (y_min + y_max) / 2
                         b_width = x_max - x_min
                         b_height = y_max - y_min
-                        bbox_2.append({"name": class_label, "center": (int(b_center_x), int(b_center_y)), "(W, h)": (int(b_width), int(b_height))})
+                        bbox_1.append({"name": class_label, "position": {"x1": c1[0], "y1": c1[1], "x2": c2[0], "y2": c2[1]},
+                                       "(W, h)": (int(b_width), int(b_height))})
+                        bbox_2.append({"name": class_label, "center": (int(b_center_x), int(b_center_y))})
 
                         if save_crop:
                             save_one_box(xyxy, imc, file=save_dir / 'crops' / names[c] / f'{p.stem}.jpg', BGR=True)
