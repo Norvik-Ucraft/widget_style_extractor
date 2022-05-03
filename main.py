@@ -6,38 +6,40 @@ import config
 from screenshot import HttpService
 
 
-def convert_save_65(base64_img, screenshot_path):
-    path_exists = os.path.exists(screenshot_path)
+class WidgetsCoordinates:
+    def __init__(self):
+        self.widget_coordinate_1 = []
+        self.widget_coordinate_2 = []
+        self.run_device = config.RUN_DEVICE
 
-    if not path_exists:
-        os.mkdir(screenshot_path)
+    @staticmethod
+    def convert_save_65(base64_img, screenshot_path):
+        path_exists = os.path.exists(screenshot_path)
 
-    with open(os.path.join(screenshot_path, config.SS_PATH), mode='wb') as file:
-        file.write(base64.decodebytes(base64_img))
+        if not path_exists:
+            os.mkdir(screenshot_path)
 
-    image_path = os.path.join(screenshot_path, config.SS_PATH)
+        with open(os.path.join(screenshot_path, config.SS_PATH), mode='wb') as file:
+            file.write(base64.decodebytes(base64_img))
 
-    return image_path
+        image_path = os.path.join(screenshot_path, config.SS_PATH)
 
+        return image_path
 
-def find_coordinate():
-    opt = detect.parse_opt()
-    screenshot_obj = HttpService(config.API_KEY, config.UC_SCREENSHOT_API_URL)
-    status, img64 = screenshot_obj.post(opt.input_url)
-    usr_img_path = convert_save_65(img64, 'media/')
+    def find_coordinate(self):
+        opt = detect.parse_opt()
+        screenshot_obj = HttpService(config.API_KEY, config.UC_SCREENSHOT_API_URL)
+        status, img64 = screenshot_obj.post(opt.input_url)
+        usr_img_path = self.convert_save_65(img64, 'media/')
 
-    return usr_img_path
+        return usr_img_path
 
+    def inference(self):
+        opt = detect.parse_opt()
+        screenshot_path = self.find_coordinate()
+        opt.source = screenshot_path
+        opt.device = self.run_device
+        opt.weights = 'weights/best.pt'
+        widget_coordinate_1, widget_coordinate_2 = detect.main(opt)
 
-def inference(screenshot_path, run_device='0'):
-    opt = detect.parse_opt()
-    opt.source = screenshot_path
-    opt.device = run_device
-    opt.weights = 'weights/best.pt'
-    widget_coordinate_1, widget_coordinate_2 = detect.main(opt)
-
-    return widget_coordinate_2
-
-
-screenshot_path = find_coordinate()
-coordinates = inference(screenshot_path)
+        return widget_coordinate_2
