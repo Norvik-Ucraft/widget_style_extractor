@@ -1,8 +1,13 @@
 import os
+
+import cv2
+
 import detect
 import base64
 import config
+import numpy as np
 
+from PIL import Image
 from screenshot import HttpService
 
 
@@ -37,9 +42,17 @@ class WidgetsCoordinates:
     def inference(self):
         opt = detect.parse_opt()
         screenshot_path = self.find_coordinate()
+
+        img = np.asarray(Image.open(screenshot_path))
+        img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
+
         opt.source = screenshot_path
         opt.device = self.run_device
         opt.weights = 'weights/best.pt'
         widget_coordinate_1, widget_coordinate_2 = detect.main(opt)
 
-        return widget_coordinate_2
+        return widget_coordinate_2, img.shape
+
+
+output = WidgetsCoordinates()
+output.find_coordinate()
