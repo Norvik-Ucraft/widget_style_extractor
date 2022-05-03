@@ -4,3 +4,7 @@ torchaudio==0.8.1
 torchvision==0.9.1+cu102
 opencv-python==4.5.5.64
 matplotlib==3.5.2
+pandas==1.4.2
+PyYAML==6.0
+tqdm==4.64.0
+seaborn==0.11.2
