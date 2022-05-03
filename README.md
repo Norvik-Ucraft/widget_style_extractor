@@ -14,3 +14,5 @@ Windows & Ubuntu: \
 For the execution we need to run this command on your terminal: \
 ` python main.py --input-url URL --weights main_model/yolov5s.pt`
 
+To run this project you need the model `yolov5s.pt` in your `./main_model/` directory and you firefox version _**geckodriver**_
+in your `./driver/` directory
