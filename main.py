@@ -1,7 +1,5 @@
 import os
-
 import cv2
-
 import detect
 import base64
 import config
