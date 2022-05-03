@@ -129,6 +129,12 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-# models
+# Models
 main_model/
-secondary_models/
+models/
+
+# Media
+media/
+
+# Extra module
+Arial.ttf
