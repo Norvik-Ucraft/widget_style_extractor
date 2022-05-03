@@ -135,6 +135,7 @@ models/
 
 # Media
 media/
+runs/ 
 
 # Extra module
 Arial.ttf
