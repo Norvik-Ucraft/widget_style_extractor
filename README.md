@@ -12,7 +12,7 @@ Windows & Ubuntu: \
 `pip install torch==1.8.1+cu102 torchvision==0.9.1+cu102 torchaudio==0.8.1 -f https://download.pytorch.org/whl/torch_stable.html`
 
 For the execution we need to run this command on your terminal: \
-` python main.py --input-url URL --weights main_model/yolov5s.pt`
+` python style_extractor.py --input-url URL --weights main_model/yolov5s.pt`
 
 To run this project you need the model `yolov5s.pt` in your `./main_model/` directory and you firefox version _**geckodriver**_
 in your `./driver/` directory
