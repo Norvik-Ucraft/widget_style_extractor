@@ -131,11 +131,10 @@ dmypy.json
 
 # Models
 main_model/
-models/
 
 # Media
 media/
-runs/ 
+runs/
 
 # Extra module
 Arial.ttf
