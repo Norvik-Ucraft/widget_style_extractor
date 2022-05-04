@@ -1,4 +1,5 @@
 import re
+import json
 import detect
 import config
 import logging
@@ -22,7 +23,7 @@ class StyleExtractor:
 
         options.headless = True
         service = Service('./driver/geckodriver.exe')
-        get_coordinates, image_shape = coordinates.inference()
+        get_coordinates, image_shape, widget_names = coordinates.inference()
 
         for coordinates_tuple in get_coordinates:
             self.coordinate_list.append(coordinates_tuple['center'])
@@ -30,13 +31,13 @@ class StyleExtractor:
         self.driver = webdriver.Firefox(service=service, options=options)
         self.driver.get(opt.input_url)
 
-        return image_shape
+        return image_shape, widget_names
 
     def get_computed_style(self):
-        image_size = self.widget_coordinates()
+        image_size, widget_names = self.widget_coordinates()
         self.driver.set_window_size(image_size[1], image_size[0])
 
-        for coordinates_pair in self.coordinate_list:
+        for (coordinates_pair, widget_name) in zip(self.coordinate_list, widget_names):
             element = self.driver.execute_script("return document.elementFromPoint(arguments[0], arguments[1])",
                                                  coordinates_pair[0], coordinates_pair[1])
             if element:
@@ -51,7 +52,18 @@ class StyleExtractor:
                     if not key_number and not uppercase_selector and not extra_selector:
                         temp_computed_style[key] = css_property[key]
 
-                self.computed_style.append(temp_computed_style)
+                self.computed_style.append({'widget_names': widget_name, 'Computed_style': temp_computed_style})
 
         self.driver.quit()
         return self.computed_style
+
+    def json_computed_style(self):
+        computed_style = self.get_computed_style()
+
+        for style in computed_style:
+            style = json.dumps(style, indent=2)
+            print(style)
+
+
+output = StyleExtractor()
+output.json_computed_style()
