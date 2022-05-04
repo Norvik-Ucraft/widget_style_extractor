@@ -194,6 +194,7 @@ def run(weights='yolov5s.pt',  # model.pt path(s)
                 # Write results
                 bbox_1 = []
                 bbox_2 = []
+                widget_names = []
                 for *xyxy, conf, cls in reversed(det):
                     if save_txt:  # Write to file
                         xywh = (xyxy2xywh(torch.tensor(xyxy).view(1, 4)) / gn).view(-1).tolist()  # normalized xywh
@@ -219,6 +220,7 @@ def run(weights='yolov5s.pt',  # model.pt path(s)
                         bbox_1.append({"name": class_label, "position": {"x1": c1[0], "y1": c1[1], "x2": c2[0], "y2": c2[1]},
                                        "(W, h)": (int(b_width), int(b_height))})
                         bbox_2.append({"name": class_label, "center": (int(b_center_x), int(b_center_y))})
+                        widget_names.append(class_label)
 
                         if save_crop:
                             save_one_box(xyxy, imc, file=save_dir / 'crops' / names[c] / f'{p.stem}.jpg', BGR=True)
@@ -259,7 +261,7 @@ def run(weights='yolov5s.pt',  # model.pt path(s)
         strip_optimizer(weights)  # update model (to fix SourceChangeWarning)
 
     print(f'Done. ({time.time() - t0:.3f}s)')
-    return bbox_1, bbox_2
+    return bbox_1, bbox_2, widget_names
 
 
 def parse_opt():
