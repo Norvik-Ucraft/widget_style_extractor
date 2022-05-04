@@ -141,3 +141,6 @@ Arial.ttf
 
 # Webdriver
 driver/
+
+# Json content
+json_content/
