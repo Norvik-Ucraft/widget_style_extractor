@@ -47,10 +47,6 @@ class WidgetsCoordinates:
         opt.source = screenshot_path
         opt.device = self.run_device
         opt.weights = 'weights/best.pt'
-        widget_coordinate_1, widget_coordinate_2 = detect.main(opt)
+        widget_coordinate_1, widget_coordinate_2, widget_names = detect.main(opt)
 
-        return widget_coordinate_2, img.shape
-
-
-output = WidgetsCoordinates()
-output.find_coordinate()
+        return widget_coordinate_2, img.shape, widget_names
