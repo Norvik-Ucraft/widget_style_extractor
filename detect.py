@@ -6,12 +6,13 @@ Run inference on images, videos, directories, streams, etc.
 import argparse
 import sys
 import time
-from pathlib import Path
-
+import os
 import cv2
 import numpy as np
 import torch
 import torch.backends.cudnn as cudnn
+
+from pathlib import Path
 
 FILE = Path(__file__).absolute()
 sys.path.append(FILE.parents[0].as_posix())  # add yolov5/ to path
@@ -56,8 +57,9 @@ def run(weights='yolov5s.pt',  # model.pt path(s)
         ('rtsp://', 'rtmp://', 'http://', 'https://'))
 
     # Directories
-    save_dir = increment_path(Path(project) / name, exist_ok=exist_ok)  # increment run
-    (save_dir / 'labels' if save_txt else save_dir).mkdir(parents=True, exist_ok=True)  # make dir
+    save_dir = Path(project) / name  # increment run
+    if not os.path.exists(save_dir):
+        os.mkdir(save_dir)
 
     # Initialize
     set_logging()
